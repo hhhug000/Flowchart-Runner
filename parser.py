@@ -1,27 +1,33 @@
 import json
 import argparse
+from collections import deque
 
 blocks = {}
 startBlockId = None
 
 variables = {}
 
-def parseBlock(blockId):
-    end = False
-    match blocks[blockId]["type"]:
-        case "terminator":
-            if blocks[blockId]["value"] == "END":
-                end = True
-            pass
-        case "io":
-            if blocks[blockId]["subtype"] == "input":
-                variables[blocks[blockId]["variable"]] = input(blocks[blockId]["value"])
-            elif blocks[blockId]["subtype"] == "output":
-                print(blocks[blockId]["value"])
+def runFlow(startBlockId):
 
-    if not end:
-        for line in blocks[blockId]["lines"]:
-            parseBlock(line)
+    activeLines = deque([startBlockId])
+
+    while activeLines:
+        blockId = activeLines.popleft()
+        end = False
+        match blocks[blockId]["type"]:
+            case "terminator":
+                if blocks[blockId]["value"] == "END":
+                    end = True
+                pass
+            case "io":
+                if blocks[blockId]["subtype"] == "input":
+                    variables[blocks[blockId]["variable"]] = input(blocks[blockId]["value"])
+                elif blocks[blockId]["subtype"] == "output":
+                    print(blocks[blockId]["value"])
+
+        if not end:
+            for line in blocks[blockId].get("lines", []):
+                activeLines.append(line)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("parser.py")
@@ -38,4 +44,4 @@ if __name__ == "__main__":
             break
 
     quit = False
-    parseBlock(startBlockId)
+    runFlow(startBlockId)
