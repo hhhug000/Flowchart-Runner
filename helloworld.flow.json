@@ -1,0 +1,26 @@
+{
+    "metadata":{
+        "name":"Hello, World"
+    },
+    "chart":{
+        "start":{
+            "type":"terminator",
+            "value":"START",
+            "lines":[
+                "helloworld"
+            ]
+        },
+        "helloworld":{
+            "type":"io",
+            "subtype":"output",
+            "value":"Hello, World",
+            "lines":[
+                "end"
+            ]
+        },
+        "end":{
+            "type":"terminator",
+            "value":"END"
+        }
+    }
+}

@@ -1,0 +1,58 @@
+{
+    "metadata":{
+        "name":"Example Flowchart"
+    },
+    "chart":{
+        "start":{
+            "type":"terminator",
+            "value":"START",
+            "lines":[
+                "ask"
+            ]
+        },
+        "ask":{
+            "type":"io",
+            "subtype":"input",
+            "value":"What is the best subject?",
+            "variable":"subject",
+            "lines":[
+                "normalise"
+            ]
+        },
+        "normalise":{
+            "type":"process",
+            "value":"subject = subject.lower()",
+            "lines":[
+                "check"
+            ]
+        },
+        "check":{
+            "type":"decision",
+            "value":"subject == 'compsci'",
+            "lines":{
+                "True":"correct",
+                "False":"incorrect"
+            }
+        },
+        "correct":{
+            "type":"io",
+            "subtype":"output",
+            "value":"Correct!",
+            "lines":[
+                "end"
+            ]
+        },
+        "incorrect":{
+            "type":"io",
+            "subtype":"output",
+            "value":"Incorrect, try again",
+            "lines":[
+                "ask"
+            ]
+        },
+        "end":{
+            "type":"terminator",
+            "value":"END"
+        }
+    }
+}
