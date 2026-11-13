@@ -1,6 +1,7 @@
 import json
 import argparse
 from collections import deque
+from drawer import drawFlow
 
 blocks = {}
 startBlockId = None
@@ -13,6 +14,7 @@ def runFlow(startBlockId):
     blockId = startBlockId
 
     while activeLines:
+        nextBlocks = []
         blockId = activeLines.popleft()
         block = blocks[blockId]
         end = False
@@ -24,7 +26,7 @@ def runFlow(startBlockId):
             case "io":
                 if block["subtype"] == "input":
                     inputval = input(block["value"])
-                    if block["datatype"]:
+                    if block.get("datatype"):
                         match block["datatype"]:
                             case "string":
                                 pass
@@ -57,7 +59,14 @@ def runFlow(startBlockId):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("parser.py")
+    parser.add_argument("mode", help="The mode to run in (either run or draw)")
     parser.add_argument("file", help="The flow file to parse")
+    parser.add_argument(
+        "-o",
+        "--output",
+        default="flowchart",
+        help="Output filename for draw mode (excluding extension)"
+    )
     args = parser.parse_args()
 
     with open(args.file, "r") as f:
@@ -69,5 +78,9 @@ if __name__ == "__main__":
             startBlockId = blockId
             break
 
-    quit = False
-    runFlow(startBlockId)
+    if args.mode.lower() == "run":
+        runFlow(startBlockId)
+    elif args.mode.lower() == "draw":
+        drawFlow(flow, args.output)
+    else:
+        print("Invalid mode (must be either run or draw)")
