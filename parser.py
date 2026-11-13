@@ -10,10 +10,11 @@ variables = {}
 def runFlow(startBlockId):
 
     activeLines = deque([startBlockId])
-    block = blocks[blockId]
+    blockId = startBlockId
 
     while activeLines:
         blockId = activeLines.popleft()
+        block = blocks[blockId]
         end = False
         match block["type"]:
             case "terminator":
@@ -22,12 +23,25 @@ def runFlow(startBlockId):
                 pass
             case "io":
                 if block["subtype"] == "input":
-                    variables[blocks["variable"]] = input(blocks["value"])
+                    variables[block["variable"]] = input(block["value"])
                 elif block["subtype"] == "output":
-                    print(blocks["value"])
+                    print(block["value"])
+            case "process":
+                exec(block["value"], {}, variables)
+            case "decision":
+                result = str(eval(block["value"], {}, variables))
+                branch = block["lines"].get(result)
+                if branch:
+                    if isinstance(branch, list):
+                        nextBlocks = branch
+                    else:
+                        nextBlocks = [branch]
 
         if not end:
-            for line in blocks.get("lines", []):
+            if block["type"] != "decision":
+                nextBlocks = block.get("lines", [])
+
+            for line in nextBlocks:
                 activeLines.append(line)
 
 if __name__ == "__main__":
