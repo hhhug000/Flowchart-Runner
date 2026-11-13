@@ -23,9 +23,20 @@ def runFlow(startBlockId):
                 pass
             case "io":
                 if block["subtype"] == "input":
-                    variables[block["variable"]] = input(block["value"])
+                    inputval = input(block["value"])
+                    if block["datatype"]:
+                        match block["datatype"]:
+                            case "string":
+                                pass
+                            case "int":
+                                inputval = int(inputval)
+                            case "float":
+                                inputval = float(inputval)
+                            case "bool":
+                                inputval = bool(inputval)
+                    variables[block["variable"]] = inputval
                 elif block["subtype"] == "output":
-                    print(block["value"])
+                    print(block["value"].format(**variables))
             case "process":
                 exec(block["value"], {}, variables)
             case "decision":
