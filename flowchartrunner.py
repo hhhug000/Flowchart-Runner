@@ -58,7 +58,7 @@ def runFlow(startBlockId):
                 activeLines.append(line)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("parser.py")
+    parser = argparse.ArgumentParser("flowchartrunner.py")
     parser.add_argument("mode", help="The mode to run in (either run or draw)")
     parser.add_argument("file", help="The flow file to parse")
     parser.add_argument(
