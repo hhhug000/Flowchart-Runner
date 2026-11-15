@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ```
 
 You can also install everything at once with no dependencies in a compiled binary from the releases page:
-![https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0](https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0)
+[https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0](https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0)
 
 Then make a flowchart (Use the guide in the README) and draw and run it with the below commands:
 
