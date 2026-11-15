@@ -22,7 +22,8 @@ def drawFlow(flow, outputName="flowchart"):
         "terminator": "flowchart.terminator",
         "io": "flowchart.input",
         "process": "box",
-        "decision": "diamond"
+        "decision": "diamond",
+        "subprocess": "box"
     }
 
     for blockId, block in blocks.items():
@@ -30,7 +31,12 @@ def drawFlow(flow, outputName="flowchart"):
         value = block.get("value", blockId).replace('"', '\\"')
         shape = shape_map.get(b_type, "box")
 
-        diag_lines.append(f'  {blockId} [label="{value}", shape="{shape}", width=170];')
+        attrs = ""
+        if b_type == "subprocess":
+            value = f"|  {value}  |"
+            attrs = ', color="#e8f0fe", style="dashed"'
+
+        diag_lines.append(f'  {blockId} [label="{value}", shape="{shape}", width=170{attrs}];')
 
     for blockId, block in blocks.items():
         lines = block.get("lines")

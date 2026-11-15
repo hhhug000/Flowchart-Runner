@@ -8,9 +8,16 @@ startBlockId = None
 
 variables = {}
 
+def findTerminator(label):
+    for blockId, block in blocks.items():
+        if block.get("type") == "terminator" and block.get("value") == label:
+            return blockId
+    raise ValueError(f"Terminator {label} not found")
+
 def runFlow(startBlockId):
 
     activeLines = deque([startBlockId])
+    callStack = []
     blockId = startBlockId
 
     while activeLines:
@@ -22,6 +29,9 @@ def runFlow(startBlockId):
             case "terminator":
                 if block["value"] == "END":
                     end = True
+                    if callStack:
+                        for line in callStack.pop():
+                            activeLines.append(line)
                 pass
             case "io":
                 if block["subtype"] == "input":
@@ -49,9 +59,12 @@ def runFlow(startBlockId):
                         nextBlocks = branch
                     else:
                         nextBlocks = [branch]
+            case "subprocess":
+                callStack.append(block.get("lines", []))
+                nextBlocks = [findTerminator(block["value"])]
 
         if not end:
-            if block["type"] != "decision":
+            if block["type"] not in ("decision", "subprocess"):
                 nextBlocks = block.get("lines", [])
 
             for line in nextBlocks:
