@@ -125,3 +125,49 @@ Correct!
 And when drawn will produce this image:
 
 ![The example flowchart](example.png)
+
+## Subprocesses
+
+Subprocesses are easy to use, just create a new terminator with the subprocess name as the value, then when you want to use it use a subprocess block with the value set to that name.
+
+For example this chart below will say hello world, but with a subprocess:
+
+```json
+"start":{
+    "type":"terminator",
+    "value":"START",
+    "lines":[
+        "greet"
+    ]
+},
+"greet":{
+    "type":"subprocess",
+    "value":"GREET",
+    "lines":[
+        "end"
+    ]
+},
+"end":{
+    "type":"terminator",
+    "value":"END"
+},
+"greetprocess":{
+    "type":"terminator",
+    "value":"GREET",
+    "lines":[
+        "sayhelloworld"
+    ]
+},
+"sayhelloworld":{
+    "type":"io",
+    "subtype":"output",
+    "value":"Hello, World!",
+    "lines":[
+        "endgreet"
+    ]
+},
+"endgreet":{
+    "type":"terminator",
+    "value":"END"
+}
+```

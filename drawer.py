@@ -33,7 +33,6 @@ def drawFlow(flow, outputName="flowchart"):
 
         attrs = ""
         if b_type == "subprocess":
-            value = f"|  {value}  |"
             attrs = ', color="#e8f0fe", style="dashed"'
 
         diag_lines.append(f'  {blockId} [label="{value}", shape="{shape}", width=170{attrs}];')
