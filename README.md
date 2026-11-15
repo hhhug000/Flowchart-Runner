@@ -11,6 +11,8 @@ git clone https://github.com/hhhug000/Flowchart-Runner.git
 cd Flowchart-Runner
 pip install -r requirements.txt
 ```
+You can also install everything at once with no dependencies in a compiled binary from the releases page:
+[https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0](https://github.com/hhhug000/Flowchart-Runner/releases/tag/1.0)
 
 Then make your own flowchart file, or use an example file
 
